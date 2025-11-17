@@ -18,8 +18,24 @@ jobs:
 
       - name: Install Lambda dependencies
         run: |
+         # Create a python directory for the Lambda Layer
           mkdir python
-          pip install seaborn -t python/
+
+          # Install only seaborn and matplotlib (no extras)
+          pip install --no-cache-dir matplotlib seaborn -t python/
+
+          # Remove unnecessary files to reduce layer size
+          # Remove Python bytecode files
+          find python/lib/python3.9/site-packages/matplotlib -name '__pycache__' -exec rm -r {} +
+          find python/lib/python3.9/site-packages/seaborn -name '__pycache__' -exec rm -r {} +
+
+          # Optionally remove documentation, tests, and examples
+          rm -rf python/lib/python3.9/site-packages/matplotlib/tests
+          rm -rf python/lib/python3.9/site-packages/matplotlib/examples
+          rm -rf python/lib/python3.9/site-packages/seaborn/tests
+          rm -rf python/lib/python3.9/site-packages/seaborn/examples
+
+          # Zip the files into a Lambda Layer
           zip -r lambda-layer.zip python
 
       - name: Upload Lambda layer artifact
