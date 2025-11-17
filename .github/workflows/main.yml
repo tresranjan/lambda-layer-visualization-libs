@@ -19,8 +19,8 @@ jobs:
       - name: Install Lambda dependencies
         run: |
           mkdir python
-          pip install matplotlib seaborn -t python/
-          zip -r lambda-layer.zip python
+          pip install matplotlib -t python/
+          zip -r lambda-layer-matplot.zip python
 
       - name: Upload Lambda layer artifact
         uses: actions/upload-artifact@v4
