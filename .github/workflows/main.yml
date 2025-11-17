@@ -1,0 +1,29 @@
+name: Build Lambda Layer
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'  # Change to match your Lambda python version
+
+      - name: Install Lambda dependencies
+        run: |
+          mkdir python
+          pip install matplotlib seaborn -t python/
+          zip -r lambda-layer.zip python
+
+      - name: Upload Lambda layer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: lambda-layer
+          path: lambda-layer.zip
