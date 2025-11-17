@@ -22,7 +22,7 @@ jobs:
           mkdir python
 
           # Install only seaborn and matplotlib (no extras)
-          pip install pandas -t python/
+          pip install matplotlib.pyplot -t python/
 
           
           # Zip the files into a Lambda Layer
